@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+  </script>
+
+<script src="//apis.google.com/js/platform.js?onload=start"> </script>
+
+<!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+
+
+</head>
+
+
+<body>
+
+
+<!-- GOOGLE PLUS SIGN IN BUTTON-->
+
+
+          <div id="signinButton">
+          <!-- data-scope speficy what Google resource to access, and you can go into google documentation to see what information is accessed. For example, name, profile, picture, etc.-->
+          <span class="g-signin"
+            data-scope="openid email"
+            data-clientid="753771293177-e6gcpm4jed4nekf09tnqv3dkc2qnc5dc.apps.googleusercontent.com"
+            data-redirecturi="postmessage"
+            data-accesstype="offline"
+            data-cookiepolicy="single_host_origin"
+            data-callback="signInCallback"
+            data-approvalprompt="force">
+          </span>
+        </div>
+
+
+
+
+<!--END GOOGLE PLUS SIGN IN BUTTON -->
+
+  </body>
+
+  </html>

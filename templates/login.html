@@ -1,42 +1,60 @@
-<!DOCTYPE html>
+<!-- Google+ API was shutdown on 3/7/2019. New OAuthFlow (listed below) uses the updated Google sign-in. -->
+<!--You just need to update this in login.html page for Udacity's Full Stack nanodegree  -->
+<!-- Below is the Google link I used for reference -->
+<!-- https://developers.google.com/identity/sign-in/web/server-side-flow -->
+
 <html>
 <head>
 
-  <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
-   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
-  </script>
 
-<script src="//apis.google.com/js/platform.js?onload=start"> </script>
-
-<!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
-
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+<script>
+  function start() {
+    gapi.load('auth2', function() {
+      auth2 = gapi.auth2.init({
+        client_id: '753771293177-e6gcpm4jed4nekf09tnqv3dkc2qnc5dc.apps.googleusercontent.com'
+      });
+    });
+  }
+</script>
 </head>
-
 
 <body>
 
-
-<!-- GOOGLE PLUS SIGN IN BUTTON-->
-
-
-          <div id="signinButton">
-          <span class="g-signin"
-            data-scope="openid email"
-            data-clientid="YOUR_CLIENT_ID_GOES_HERE.apps.googleusercontent.com"
-            data-redirecturi="postmessage"
-            data-accesstype="offline"
-            data-cookiepolicy="single_host_origin"
-            data-callback="signInCallback"
-            data-approvalprompt="force">
-          </span>
-        </div>
+<button id="signinButton">Google Signin</button>
+<div id="result"></div>
 
 
-
-
-<!--END GOOGLE PLUS SIGN IN BUTTON -->
-
-  </body>
-
-  </html>
+<script>
+  $('#signinButton').click(function() {
+    function signInCallback(authResult){
+      if (authResult['code']){
+        $('#signinButton').attr('style', 'display: none');
+        $.ajax({
+          type: 'POST',
+          url: '/gconnect?state={{STATE}}',
+          headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+          },
+          contentType: 'application/octet-stream; charset=utf-8',
+          success:function(result){
+            $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+                 setTimeout(function() {
+                  window.location.href = "/";
+                 }, 2000);
+          },
+          processData:false,
+          data:authResult['code']
+        });
+      } else{
+        // handle error
+        console.log('There was an error: ' + authResult['error']);
+        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+      }
+    }
+    auth2.grantOfflineAccess().then(signInCallback);
+  });
+</script>
+</body>
+</html>
